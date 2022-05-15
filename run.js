@@ -33,11 +33,16 @@ const accounts = [];
 
 (async () => {
   const YAML = require('yaml');
-  const fallback = `86552: 'Minted GStop NFTs'`;
   const { MONITOR_YAML } = process.env;
-  const yaml = MONITOR_YAML
-    ? (await axios.get(`${MONITOR_YAML}?cb=${new Date().getTime()}`)).data
-    : fallback;
+  const CACHBUSTED = `${MONITOR_YAML}?cb=${new Date().getTime()}`;
+  console.log('CACHBUSTED', CACHBUSTED);
+  const yaml = await (async () => {
+    const fs = require('fs');
+    const local = './.monitor.yaml';
+    if (fs.existsSync(local)) return fs.readFileSync(local, 'utf8');
+    if (MONITOR_YAML) return (await axios.get(CACHBUSTED)).data;
+    return `86552: 'Minted GStop NFTs'`;
+  })();
   const config = YAML.parse(yaml);
   Object.assign(mapping, config);
   accounts.push(...Object.keys(mapping));
