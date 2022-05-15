@@ -95,15 +95,14 @@ const processBlock = async (id) => {
   for (const [account, types] of Object.entries(actions)) {
     const name = mapping[account];
     messages.push(
-      `"${name}" has ${types.length} transactions: ${JSON.stringify(
+      `"${name}" has ${
+        types.length
+      } transactions: https://explorer.loopring.io/account/${account} ${JSON.stringify(
         types.reduce((total, value) => {
           total[value] = (total[value] || 0) + 1;
           return total;
         }, {})
-      ).replace(
-        /"/g,
-        ''
-      )}. Link: https://explorer.loopring.io/account/${account}`
+      ).replace(/"/g, '')}`
     );
   }
   if (id % 50 === 0) {
@@ -117,11 +116,7 @@ const processBlock = async (id) => {
   }
 
   if (messages.length) {
-    await ASSET_TRACKER.send(
-      `Activity in https://explorer.loopring.io/block/${id}\n\n${messages.join(
-        '\n\n'
-      )}`
-    );
+    await ASSET_TRACKER.send(messages.join('\n'));
     // } else {
     //   ASSET_TRACKER.send(`No activity from ${accounts.join(', ')} in this block`);
   }
