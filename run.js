@@ -46,7 +46,7 @@ const accounts = [];
   const config = YAML.parse(yaml);
   Object.assign(mapping, config);
   accounts.push(...Object.keys(mapping));
-  console.log('monitoring', accounts);
+  console.log('monitoring', accounts, accounts.length);
   // console.log({ yaml, config, mapping });
 })();
 
