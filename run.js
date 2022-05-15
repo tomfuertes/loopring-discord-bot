@@ -9,6 +9,10 @@ ASSET_TRACKER.setUsername('Loopring Heroku Bot');
 const NFT_TRACKER = new Webhook(process.env.DISCORD_NFT_WEBHOOK_URL);
 NFT_TRACKER.setUsername('Loopring Heroku Bot');
 
+const AVATAR = 'https://i.imgur.com/hayWcnY.jpg';
+ASSET_TRACKER.setAvatar(AVATAR);
+NFT_TRACKER.setAvatar(AVATAR);
+
 const IS_DEV = (process.env.npm_lifecycle_script || '').includes('nodemon');
 
 if (IS_DEV) {
