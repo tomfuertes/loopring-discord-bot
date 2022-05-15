@@ -100,7 +100,7 @@ const processBlock = async (id) => {
   for (const [account, types] of Object.entries(actions)) {
     const name = mapping[account];
     messages.push(
-      `"${name}" has ${
+      `\`${name}\` did ${
         types.length
       } transactions: https://explorer.loopring.io/account/${account} ${JSON.stringify(
         types.reduce((total, value) => {
@@ -121,7 +121,11 @@ const processBlock = async (id) => {
   }
 
   if (messages.length) {
-    await ASSET_TRACKER.send(messages.join('\n'));
+    await ASSET_TRACKER.send(
+      `Activity in https://explorer.loopring.io/block/${id}\n${messages.join(
+        '\n'
+      )}`
+    );
     // } else {
     //   ASSET_TRACKER.send(`No activity from ${accounts.join(', ')} in this block`);
   }
