@@ -6,7 +6,18 @@ const axios = require('axios');
 const { Webhook } = require('discord-webhook-node');
 const ASSET_TRACKER = new Webhook(process.env.DISCORD_ASSET_WEBHOOK_URL);
 ASSET_TRACKER.setUsername('Loopring Heroku Bot');
-const NFT_TRACKER = new Webhook(process.env.DISCORD_NFT_WEBHOOK_URL);
+
+const NFT_TRACKERS = [
+  new Webhook(process.env.DISCORD_NFT_WEBHOOK_URL),
+  new Webhook(process.env.DISCORD_LRC_WEBOOK_URL),
+];
+
+const NFT_TRACKER = {};
+['send', 'sendFile', 'setUsername', 'setAvatar'].forEach((fn) => {
+  NFT_TRACKER[fn] = async (...args) =>
+    Promise.all(NFT_TRACKERS.map((tracker) => tracker[fn](...args)));
+});
+
 NFT_TRACKER.setUsername('Loopring Heroku Bot');
 
 const AVATAR = 'https://i.imgur.com/hayWcnY.jpg';
@@ -16,10 +27,10 @@ NFT_TRACKER.setAvatar(AVATAR);
 const IS_DEV = (process.env.npm_lifecycle_script || '').includes('nodemon');
 
 if (IS_DEV) {
-  ASSET_TRACKER.send = console.log.bind(console, 'SENDING:');
-  ASSET_TRACKER.sendFile = console.log.bind(console, 'SENDING FILE:');
-  NFT_TRACKER.send = console.log.bind(console, 'SENDING:');
-  NFT_TRACKER.sendFile = console.log.bind(console, 'SENDING FILE:');
+  ['send', 'sendFile', 'setUsername', 'setAvatar'].forEach((el) => {
+    ASSET_TRACKER[el] = console.log.bind(console, 'SENDING:', el);
+    NFT_TRACKER[el] = console.log.bind(console, 'SENDING:', el);
+  });
 }
 
 const loopring = require('./loopring');
