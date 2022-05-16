@@ -63,7 +63,7 @@ module.exports = {
   },
   join: async (paths) => {
     // console.log('JOIN1');
-    const images = paths.filter(Boolean).sort();
+    const images = paths.filter(Boolean);
     const grid = [];
 
     const chunkSize = Math.floor(Math.sqrt(images.length));
