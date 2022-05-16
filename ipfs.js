@@ -66,8 +66,7 @@ module.exports = {
     const images = paths.filter(Boolean).sort();
     const grid = [];
 
-    const sqRt = Math.floor(Math.sqrt(images.length));
-    const chunkSize = sqRt > 5 ? 5 : sqRt;
+    const chunkSize = Math.floor(Math.sqrt(images.length));
     for (let i = 0; i < images.length; i += chunkSize) {
       const chunk = images.slice(i, i + chunkSize);
       grid.push(chunk);
