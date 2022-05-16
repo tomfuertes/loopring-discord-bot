@@ -9,7 +9,7 @@ ASSET_TRACKER.setUsername('Loopring Heroku Bot');
 
 const NFT_TRACKERS = [
   new Webhook(process.env.DISCORD_NFT_WEBHOOK_URL),
-  new Webhook(process.env.DISCORD_LRC_WEBOOK_URL),
+  new Webhook(process.env.DISCORD_LRC_WEBHOOK_URL),
 ];
 
 const NFT_TRACKER = {};
@@ -191,7 +191,9 @@ const processBlock = async (id) => {
 
 (async () => {
   console.log('run', new Date());
-  for (const block of (await loopring.getBlocks()).data.data.blocks.reverse()) {
+  for (const block of (
+    await loopring.getBlocks(25)
+  ).data.data.blocks.reverse()) {
     await processBlock(block.id);
   }
   process.exit(0);

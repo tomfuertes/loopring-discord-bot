@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const getBlocks = async () =>
+const getBlocks = async (count = 10) =>
   axios.post(
     'https://api.thegraph.com/subgraphs/name/juanmardefago/loopring36',
     {
@@ -47,7 +47,7 @@ const getBlocks = async () =>
     }`,
       variables: {
         skip: 0,
-        first: 10,
+        first: count,
         orderBy: 'internalID',
         orderDirection: 'desc',
       },
