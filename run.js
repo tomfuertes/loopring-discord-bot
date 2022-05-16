@@ -222,7 +222,7 @@ const processBlock = async (id) => {
 (async () => {
   console.log('run', new Date());
   for (const block of (
-    await loopring.getBlocks(25)
+    await loopring.getBlocks(10)
   ).data.data.blocks.reverse()) {
     await processBlock(block.id);
   }
