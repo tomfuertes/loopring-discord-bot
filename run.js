@@ -127,13 +127,16 @@ const processBlock = async (id) => {
   }
 
   if (id % 50 === 0) {
-    const repl = `Pulse Check every 50th block. I'm still alive and monitoring: \`\`\`
-    TODO
-    \`\`\``;
+    await ASSET_TRACKER.send(
+      "Pulse Check every 50th block. I'm still alive and monitoring:"
+    );
+    const repl = `\`\`\`TODO\`\`\``;
 
     const monitoring = JSON.stringify(mapping, null, 2)
       .split('\n')
-      .map((s) => s.trim());
+      .map((s) => s.trim())
+      .map((s) => s.split(': ').reverse().join(''))
+      .sort();
     monitoring.shift();
     monitoring.pop();
 
