@@ -135,10 +135,12 @@ const processBlock = async (id) => {
     const monitoring = JSON.stringify(mapping, null, 2)
       .split('\n')
       .map((s) => s.trim())
-      .map((s) => s.split(': ').reverse().join(''))
-      .sort();
-    monitoring.shift();
-    monitoring.pop();
+      .filter((s) => s.length > 1)
+      .map((s) => s.split(': ').reverse().join('|'))
+      .sort()
+      .map((s) => s.split('|').reverse().join(': '));
+    // monitoring.shift();
+    // monitoring.pop();
 
     let chunkSizeSplit = 1;
     let sent = false;
