@@ -130,22 +130,37 @@ const processBlock = async (id) => {
     const repl = `Pulse Check every 50th block. I'm still alive and monitoring: \`\`\`
     TODO
     \`\`\``;
-    const padding = repl.length;
 
-    const monitoring = JSON.stringify(mapping, null, 2).split('\n');
+    const monitoring = JSON.stringify(mapping, null, 2)
+      .split('\n')
+      .map((s) => s.trim());
+    monitoring.shift();
+    monitoring.pop();
 
-    let toSend = '';
-    while (monitoring.length) {
-      const next = monitoring.unshift();
-      if (toSend.length + next.length + padding > 1900) {
-        await ASSET_TRACKER.send(repl.replace('TODO', toSend));
-        toSend = '';
+    let chunkSizeSplit = 1;
+    let sent = false;
+
+    while (!sent) {
+      const grid = [];
+      const chunkSize = Math.ceil(monitoring.length / chunkSizeSplit);
+      for (let i = 0; i < monitoring.length; i += chunkSize) {
+        const chunk = monitoring.slice(i, i + chunkSize);
+        grid.push(chunk);
+      }
+
+      const sends = grid.map((g) => g.join('\n'));
+
+      if (sends.find((s) => s.length + repl.length > 1900)) {
+        chunkSizeSplit++;
         continue;
       } else {
-        toSend += `${next}\n`;
+        for (const toSend of sends) {
+          await ASSET_TRACKER.send(repl.replace('TODO', toSend));
+        }
+        sent = true;
+        break;
       }
     }
-    await ASSET_TRACKER.send(repl.replace('TODO', toSend));
   }
 
   if (messages.length) {
