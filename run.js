@@ -125,8 +125,9 @@ const processBlock = async (id) => {
       ).replace(/"/g, '')}`
     );
   }
+
   if (id % 50 === 0) {
-    await NFT_TRACKER.send(
+    await ASSET_TRACKER.send(
       `Pulse Check every 50th block. I'm still alive and monitoring: \`\`\`${JSON.stringify(
         mapping,
         null,
