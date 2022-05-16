@@ -115,7 +115,7 @@ const processBlock = async (id) => {
   for (const [account, types] of Object.entries(actions)) {
     const name = mapping[account];
     messages.push(
-      `\`${name}\` did ${
+      `\`${name}\` had ${
         types.length
       } transactions: https://explorer.loopring.io/account/${account} ${JSON.stringify(
         types.reduce((total, value) => {
