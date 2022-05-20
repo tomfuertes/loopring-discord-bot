@@ -9,7 +9,7 @@ ASSET_TRACKER.setUsername('Loopring Heroku Bot');
 
 const NFT_TRACKERS = [
   new Webhook(process.env.DISCORD_NFT_WEBHOOK_URL),
-  // new Webhook(process.env.DISCORD_LRC_WEBHOOK_URL),
+  new Webhook(process.env.DISCORD_LRC_WEBHOOK_URL),
 ];
 
 const NFT_TRACKER = {};
