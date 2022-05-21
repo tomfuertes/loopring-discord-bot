@@ -69,7 +69,7 @@ const checks = ['account', 'fromAccount', 'toAccount', 'user', 'minter'];
 
 const processBlock = async (id) => {
   const processed = await redis.get(`block:${id}`);
-  if (/*!IS_DEV &&*/ processed) return console.log('block', { id, processed });
+  if (!IS_DEV && processed) return console.log('block', { id, processed });
 
   const block = await loopring.getBlock(id);
   // console.log(block);
