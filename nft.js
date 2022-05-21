@@ -1,6 +1,6 @@
 require('dotenv');
 const { ethers } = require('ethers');
-const redis = require('./redis');
+// const redis = require('./redis');
 
 // Connect to mainnet with a Project ID and Project Secret
 const provider = new ethers.providers.InfuraProvider('homestead', {
@@ -34,37 +34,36 @@ const idToUrl = async (id) => {
     return [minter.split('-')[0], contract, nftId.split('-')[0]];
   })();
 
-  const r = await redis.get(`nft:${id}`);
-  if (r) return r;
+  // const r = await redis.get(`nft:${id}`);
+  // if (r) return r;
 
-  const waterfall = [
-    // 'l2',
-    [
+  const WATERFALL = {
+    l2: [
       nftId,
       `0xB25f6D711aEbf954fb0265A3b29F7b9Beba7E55d`,
       `function uri(uint256 id) external view returns (string memory)`,
       `uri`,
     ],
-    // '1155
-    [
+    1155: [
       nftId,
       contract,
       `function uri(uint256 id) external view returns (string memory)`,
       `uri`,
     ],
-    // '721'
-    [
+    721: [
       nftId,
       contract,
       `function tokenURI(uint256 tokenId) public view virtual override returns (string memory)`,
       `tokenURI`,
     ],
-  ];
-  for (const args of waterfall) {
+  };
+  // eslint-disable-next-line no-unused-vars
+  for (const [key, args] of Object.entries(WATERFALL)) {
+    // console.log(key, args);
     const res = await getMetaDataLink(...args);
     if (res) {
       console.log('res', res);
-      await redis.set(`nft:${id}`, res);
+      // await redis.set(`nft:${id}`, res);
       return res;
     }
   }
