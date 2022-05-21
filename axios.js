@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const requestTimeoutInterceptor = (config) => {
+  // console.log('intercepted', config);
   if (config.timeout === undefined || config.timeout === 0) {
     return config;
   }
@@ -20,7 +21,7 @@ const requestTimeoutInterceptor = (config) => {
     });
   }
 
-  console.log('config', config);
+  // console.log('config', config);
 
   return { ...config, cancelToken: source.token };
 };

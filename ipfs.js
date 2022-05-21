@@ -53,7 +53,11 @@ module.exports = {
     console.log('download', ipfsMetaDir);
 
     try {
-      const metaJson = (await axios.get(cleanUrl(ipfsMetaDir))).data;
+      const metaJson = (
+        await axios.get(cleanUrl(ipfsMetaDir), {
+          timeout: 10000,
+        })
+      ).data;
 
       return await downloadImage(metaJson.image);
     } catch (e) {
