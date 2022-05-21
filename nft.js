@@ -14,7 +14,7 @@ const getMetaDataLink = async (
   contractABI,
   functionName
 ) => {
-  console.log('getMetaDataLink', tokenAddress, functionName);
+  // console.log('getMetaDataLink', tokenAddress, functionName, tokenId);
   try {
     let contract = new ethers.Contract(tokenAddress, [contractABI], provider);
     // console.log('contract', Object.keys(contract));
@@ -34,17 +34,12 @@ const idToUrl = async (id) => {
     return [minter.split('-')[0], contract, nftId.split('-')[0]];
   })();
 
+  // console.log({ minter, contract, nftId });
+
   // const r = await redis.get(`nft:${id}`);
   // if (r) return r;
 
   const waterfall = [
-    // l2:
-    [
-      nftId,
-      `0xB25f6D711aEbf954fb0265A3b29F7b9Beba7E55d`,
-      `function uri(uint256 id) external view returns (string memory)`,
-      `uri`,
-    ],
     // 1155:
     [
       nftId,
@@ -59,13 +54,20 @@ const idToUrl = async (id) => {
       `function tokenURI(uint256 tokenId) public view virtual override returns (string memory)`,
       `tokenURI`,
     ],
+    // l2:
+    [
+      nftId,
+      `0xB25f6D711aEbf954fb0265A3b29F7b9Beba7E55d`,
+      `function uri(uint256 id) external view returns (string memory)`,
+      `uri`,
+    ],
   ];
   // eslint-disable-next-line no-unused-vars
   for (const args of waterfall) {
     // console.log(key, args);
     const res = await getMetaDataLink(...args);
     if (res) {
-      console.log('res', res);
+      // console.log('res', res);
       // await redis.set(`nft:${id}`, res);
       return res;
     }

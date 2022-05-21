@@ -105,9 +105,11 @@ const processBlock = async (id) => {
 
   const images = [];
   for (const nft of nfts) {
+    // console.log('nft', nft);
     const url = await nftsUtils.idToUrl(nft.nft.id);
     const path = await ipfs.download(url);
     images.push(path);
+    // sdafsad();
   }
 
   const messages = [];
