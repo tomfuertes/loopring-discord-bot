@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('./axios');
 
 const getBlocks = async (count = 10) =>
   axios.post(

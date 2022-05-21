@@ -1,7 +1,7 @@
 require('dotenv').config();
 // console.log(process.env.DISCORD_WEBHOOK_URL);
 
-const axios = require('axios');
+const axios = require('./axios');
 
 const { Webhook } = require('discord-webhook-node');
 const ASSET_TRACKER = new Webhook(process.env.DISCORD_ASSET_WEBHOOK_URL);
