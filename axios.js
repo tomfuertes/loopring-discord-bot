@@ -20,6 +20,8 @@ const requestTimeoutInterceptor = (config) => {
     });
   }
 
+  console.log('config', config);
+
   return { ...config, cancelToken: source.token };
 };
 
