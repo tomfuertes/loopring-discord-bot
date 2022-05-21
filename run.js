@@ -105,7 +105,11 @@ const processBlock = async (id) => {
 
   const images = [];
   for (const nft of nfts) {
-    // console.log('nft', nft);
+    console.log('nft', {
+      l2: nft.id,
+      minter: nft.minter && nft.minter.address,
+      id: nft.nft.id,
+    });
     const url = await nftsUtils.idToUrl(nft.nft.id);
     const path = await ipfs.download(url);
     images.push(path);
