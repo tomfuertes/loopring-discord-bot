@@ -1,5 +1,25 @@
 const axios = require('axios');
 
+const api = axios.create({
+  timeout: 30000,
+});
+
+api.interceptors.request.use((request) => {
+  console.log('Starting Request', request.method, request.url);
+  return request;
+});
+
+api.interceptors.response.use((response) => {
+  console.log(
+    'Response:',
+    response.status,
+    response.statusText,
+    response.config.method,
+    response.config.url
+  );
+  return response;
+});
+
 const requestTimeoutInterceptor = (config) => {
   // console.log('intercepted', config);
   if (config.timeout === undefined || config.timeout === 0) {
@@ -26,6 +46,6 @@ const requestTimeoutInterceptor = (config) => {
   return { ...config, cancelToken: source.token };
 };
 
-axios.interceptors.request.use(requestTimeoutInterceptor);
+api.interceptors.request.use(requestTimeoutInterceptor);
 
-module.exports = axios;
+module.exports = api;

@@ -22,7 +22,7 @@ const downloadImage = async (urlArg) => {
 
   await mkdirp(Path.dirname(path));
 
-  console.log('Fetching to path:', path);
+  // console.log('Fetching to path:', path);
   const writer = fs.createWriteStream(path);
 
   const response = await axios({
@@ -50,7 +50,7 @@ const cleanUrl = (url) => {
 
 module.exports = {
   download: async (ipfsMetaDir) => {
-    console.log('download', ipfsMetaDir);
+    // console.log('download', ipfsMetaDir);
 
     try {
       const metaJson = (
