@@ -37,28 +37,31 @@ const idToUrl = async (id) => {
   // const r = await redis.get(`nft:${id}`);
   // if (r) return r;
 
-  const WATERFALL = {
-    l2: [
+  const waterfall = [
+    // l2:
+    [
       nftId,
       `0xB25f6D711aEbf954fb0265A3b29F7b9Beba7E55d`,
       `function uri(uint256 id) external view returns (string memory)`,
       `uri`,
     ],
-    1155: [
+    // 1155:
+    [
       nftId,
       contract,
       `function uri(uint256 id) external view returns (string memory)`,
       `uri`,
     ],
-    721: [
+    // 721:
+    [
       nftId,
       contract,
       `function tokenURI(uint256 tokenId) public view virtual override returns (string memory)`,
       `tokenURI`,
     ],
-  };
+  ];
   // eslint-disable-next-line no-unused-vars
-  for (const [key, args] of Object.entries(WATERFALL)) {
+  for (const args of waterfall) {
     // console.log(key, args);
     const res = await getMetaDataLink(...args);
     if (res) {
