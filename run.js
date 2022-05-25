@@ -65,11 +65,13 @@ const accounts = [];
   // console.log({ yaml, config, mapping });
 })();
 
-const checks = ['account', 'fromAccount', 'toAccount', 'user', 'minter'];
+const checks = ['account', 'fromAccount', /*'toAccount',*/ 'user', 'minter'];
 
 const processBlock = async (id) => {
   const processed = await redis.get(`block:${id}`);
   if (!IS_DEV && processed) return console.log('block', { id, processed });
+
+  // if (IS_DEV && id !== '21496') return; //  console.log('skipping');
 
   const block = await loopring.getBlock(id);
   // console.log(block);
@@ -93,6 +95,7 @@ const processBlock = async (id) => {
       .forEach((id) => {
         actions[id] = actions[id] || [];
         actions[id].push(transaction.__typename);
+        // console.log(transaction);
       });
 
     if (transaction.__typename === 'MintNFT') {
