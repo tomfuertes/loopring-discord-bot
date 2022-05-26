@@ -134,7 +134,9 @@ const processBlock = async (id) => {
         if (count === 100) {
           await NFT_TRACKER.send(
             `Large collection: https://explorer.loopring.io/collections/${contract}:\`\`\`${JSON.stringify(
-              metadata
+              metadata,
+              null,
+              2
             )}\`\`\``
           );
         }
