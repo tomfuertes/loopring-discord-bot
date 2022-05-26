@@ -49,7 +49,22 @@ const cleanUrl = (url) => {
 };
 
 module.exports = {
-  download: async (ipfsMetaDir) => {
+  downloadMetaData: async (ipfsMetaDir) => {
+    // console.log('download', ipfsMetaDir);
+
+    try {
+      return (
+        await axios.get(cleanUrl(ipfsMetaDir), {
+          timeout: 10000,
+        })
+      ).data;
+    } catch (e) {
+      console.error('ERROR', ipfsMetaDir, e.code, e.message);
+      return null;
+    }
+  },
+
+  downloadImage: async (ipfsMetaDir) => {
     // console.log('download', ipfsMetaDir);
 
     try {
@@ -65,6 +80,7 @@ module.exports = {
       return null;
     }
   },
+
   join: async (paths) => {
     // console.log('JOIN1');
     const images = paths.filter(Boolean);

@@ -112,10 +112,34 @@ const processBlock = async (id) => {
       l2: nft.id,
       minter: nft.minter && nft.minter.address,
       id: nft.nft.id,
+      // nft: Object.keys(nft),
     });
     const url = await nftsUtils.idToUrl(nft.nft.id);
-    const path = await ipfs.download(url);
-    images.push(path);
+
+    // eslint-disable-next-line no-unused-vars
+    const [minter, contract, nftId] = (() => {
+      const [minter, contract, nftId] = nft.nft.id
+        .replace(/-0x/g, '|0x')
+        .split('|');
+      return [minter.split('-')[0], contract, nftId.split('-')[0]];
+    })();
+
+    const metadata = await ipfs.downloadMetaData(url);
+    if (metadata) {
+      const path = await ipfs.downloadImage(metadata.image);
+      if (path) {
+        images.push(path);
+        const count = await redis.incr(`nft:${contract}`);
+        await redis.expire(`nft:${contract}`, 60 * 60 * 24 * 2);
+        if (count === 100) {
+          await NFT_TRACKER.send(
+            `Large collection: https://explorer.loopring.io/collections/${contract}:\`\`\`${JSON.stringify(
+              metadata
+            )}\`\`\``
+          );
+        }
+      }
+    }
     // sdafsad();
   }
 
