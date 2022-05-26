@@ -133,7 +133,7 @@ const processBlock = async (id) => {
         images.push(path);
         const count = await redis.incr(`nft:${contract}`);
         await redis.expire(`nft:${contract}`, 60 * 60 * 24 * 2);
-        if (count === 100) {
+        if (count === 25) {
           await NFT_TRACKER.send(
             `Large collection: https://explorer.loopring.io/collections/${contract}:\`\`\`${JSON.stringify(
               metadata,
