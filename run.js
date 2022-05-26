@@ -133,6 +133,7 @@ const processBlock = async (id) => {
       if (path) {
         images.push(path);
         const count = await redis.incr(`nft:${contract}`);
+        console.log({ contract, count });
         await redis.expire(`nft:${contract}`, 60 * 60 * 24 * 2);
         if (count === 25) {
           await NFT_TRACKER.send(
