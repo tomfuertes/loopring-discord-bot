@@ -46,8 +46,9 @@ const ipfs = require('./ipfs');
 const mapping = {};
 const accounts = [];
 
+const YAML = require('yaml');
+
 (async () => {
-  const YAML = require('yaml');
   const { MONITOR_YAML } = process.env;
   const CACHBUSTED = `${MONITOR_YAML}?cb=${new Date().getTime()}`;
   console.log('CACHBUSTED', CACHBUSTED);
@@ -135,11 +136,11 @@ const processBlock = async (id) => {
         await redis.expire(`nft:${contract}`, 60 * 60 * 24 * 2);
         if (count === 25) {
           await NFT_TRACKER.send(
-            `Large collection: https://explorer.loopring.io/collections/${contract}: \`\`\`${JSON.stringify(
+            `Large collection: https://explorer.loopring.io/collections/${contract}: \`\`\`\n${YAML.stringify(
               metadata,
               null,
               2
-            )}\`\`\``
+            )} \`\`\``
           );
         }
       }
