@@ -29,7 +29,7 @@ const downloadImage = async (urlArg) => {
     url,
     method: 'GET',
     responseType: 'stream',
-    timeout: 10000,
+    // timeout: 10000,
   });
 
   response.data.pipe(writer);
@@ -55,7 +55,7 @@ module.exports = {
     try {
       return (
         await axios.get(cleanUrl(ipfsMetaDir), {
-          timeout: 10000,
+          // timeout: 10000,
         })
       ).data;
     } catch (e) {
