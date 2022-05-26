@@ -136,11 +136,11 @@ const processBlock = async (id) => {
         await redis.expire(`nft:${contract}`, 60 * 60 * 24 * 2);
         if (count === 25) {
           await NFT_TRACKER.send(
-            `Large collection: https://explorer.loopring.io/collections/${contract}: \`\`\`\n${YAML.stringify(
+            `Large collection: https://explorer.loopring.io/collections/${contract}: \`\`\`${YAML.stringify(
               metadata,
               null,
               2
-            )} \`\`\``
+            ).trim()}\`\`\``
           );
         }
       }
