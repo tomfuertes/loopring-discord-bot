@@ -125,6 +125,8 @@ const processBlock = async (id) => {
     })();
 
     const metadata = await ipfs.downloadMetaData(url);
+    // console.log(metadata);
+
     if (metadata) {
       const path = await ipfs.downloadImage(metadata.image);
       if (path) {

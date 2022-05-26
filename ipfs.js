@@ -64,19 +64,12 @@ module.exports = {
     }
   },
 
-  downloadImage: async (ipfsMetaDir) => {
+  downloadImage: async (imageUrl) => {
     // console.log('download', ipfsMetaDir);
-
     try {
-      const metaJson = (
-        await axios.get(cleanUrl(ipfsMetaDir), {
-          timeout: 10000,
-        })
-      ).data;
-
-      return await downloadImage(metaJson.image);
+      return await downloadImage(imageUrl);
     } catch (e) {
-      console.error('ERROR', ipfsMetaDir, e.code, e.message);
+      console.error('ERROR', imageUrl, e.code, e.message);
       return null;
     }
   },
