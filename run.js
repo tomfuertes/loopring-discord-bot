@@ -216,7 +216,7 @@ const processBlock = async (id) => {
   }
 
   await NFT_TRACKER.send(
-    `View of ${images.length} NFTs in https://explorer.loopring.io/block/${id}?type=MintNFT`
+    `View of ${nfts.length} NFTs in https://explorer.loopring.io/block/${id}?type=MintNFT`
   );
 
   if (images.length) {
