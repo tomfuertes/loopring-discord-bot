@@ -66,7 +66,15 @@ const YAML = require('yaml');
   // console.log({ yaml, config, mapping });
 })();
 
-const checks = ['account', 'fromAccount', /*'toAccount',*/ 'user', 'minter'];
+const checks = [
+  'account', // generic
+  'fromAccount', // transfer
+  'accountA', // trade
+  'accountB', // trade
+  'user', // ???
+  'minter', // nft
+  /*'toAccount',*/
+];
 
 const processBlock = async (id) => {
   const processed = await redis.get(`block:${id}`);
