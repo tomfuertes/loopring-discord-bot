@@ -29,8 +29,8 @@ const downloadImage = async (urlArg) => {
     url,
     method: 'GET',
     responseType: 'stream',
-    maxContentLength: 52428890 / 5, // 10MB
-    maxBodyLength: 52428890 / 5, // 10MB
+    maxContentLength: 52428890 / 10, // 10MB
+    maxBodyLength: 52428890 / 10, // 10MB
     // timeout: 10000,
   });
 
