@@ -48,15 +48,15 @@ const accounts = [];
 
 const YAML = require('yaml');
 
+const { MONITOR_YAML: MONITOR_YAML_URL } = process.env;
 (async () => {
-  const { MONITOR_YAML } = process.env;
-  const CACHBUSTED = `${MONITOR_YAML}?cb=${new Date().getTime()}`;
+  const CACHBUSTED = `${MONITOR_YAML_URL}?cb=${new Date().getTime()}`;
   console.log('CACHBUSTED', CACHBUSTED);
   const yaml = await (async () => {
     const fs = require('fs');
     const local = './.monitor.yaml';
     if (fs.existsSync(local)) return fs.readFileSync(local, 'utf8');
-    if (MONITOR_YAML) return (await axios.get(CACHBUSTED)).data;
+    if (MONITOR_YAML_URL) return (await axios.get(CACHBUSTED)).data;
     return `86552: 'Minted GStop NFTs'`;
   })();
   const config = YAML.parse(yaml);
@@ -175,44 +175,45 @@ const processBlock = async (id) => {
 
   if (id % 50 === 0) {
     await ASSET_TRACKER.send(
-      "Pulse Check every 50th block. I'm still alive and monitoring:"
+      "Pulse Check every 50th block. I'm still alive and monitoring: " +
+        MONITOR_YAML_URL
     );
-    const repl = `\`\`\`TODO\`\`\``;
+    // const repl = `\`\`\`${}\`\`\``;
 
-    const monitoring = JSON.stringify(mapping, null, 2)
-      .split('\n')
-      .map((s) => s.trim())
-      .filter((s) => s.length > 1)
-      .map((s) => s.split(': ').reverse().join('|'))
-      .sort()
-      .map((s) => s.split('|').reverse().join(': '));
-    // monitoring.shift();
-    // monitoring.pop();
+    // const monitoring = JSON.stringify(mapping, null, 2)
+    //   .split('\n')
+    //   .map((s) => s.trim())
+    //   .filter((s) => s.length > 1)
+    //   .map((s) => s.split(': ').reverse().join('|'))
+    //   .sort()
+    //   .map((s) => s.split('|').reverse().join(': '));
+    // // monitoring.shift();
+    // // monitoring.pop();
 
-    let chunkSizeSplit = 1;
-    let sent = false;
+    // let chunkSizeSplit = 1;
+    // let sent = false;
 
-    while (!sent) {
-      const grid = [];
-      const chunkSize = Math.ceil(monitoring.length / chunkSizeSplit);
-      for (let i = 0; i < monitoring.length; i += chunkSize) {
-        const chunk = monitoring.slice(i, i + chunkSize);
-        grid.push(chunk);
-      }
+    // while (!sent) {
+    //   const grid = [];
+    //   const chunkSize = Math.ceil(monitoring.length / chunkSizeSplit);
+    //   for (let i = 0; i < monitoring.length; i += chunkSize) {
+    //     const chunk = monitoring.slice(i, i + chunkSize);
+    //     grid.push(chunk);
+    //   }
 
-      const sends = grid.map((g) => g.join('\n'));
+    //   const sends = grid.map((g) => g.join('\n'));
 
-      if (sends.find((s) => s.length + repl.length > 1900)) {
-        chunkSizeSplit++;
-        continue;
-      } else {
-        for (const toSend of sends) {
-          await ASSET_TRACKER.send(repl.replace('TODO', toSend));
-        }
-        sent = true;
-        break;
-      }
-    }
+    //   if (sends.find((s) => s.length + repl.length > 1900)) {
+    //     chunkSizeSplit++;
+    //     continue;
+    //   } else {
+    //     for (const toSend of sends) {
+    //       await ASSET_TRACKER.send(repl.replace('TODO', toSend));
+    //     }
+    //     sent = true;
+    //     break;
+    //   }
+    // }
   }
 
   if (messages.length) {
