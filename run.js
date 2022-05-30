@@ -117,6 +117,7 @@ const processBlock = async (id) => {
 
   const images = [];
   for (const nft of nfts) {
+    if (nft.id === '21866-217') continue; // abort a rando large request
     console.log('nft', {
       l2: nft.id,
       minter: nft.minter && nft.minter.address,
