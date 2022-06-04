@@ -107,7 +107,10 @@ const processBlock = async (id) => {
         // console.log(transaction);
       });
 
-    if (transaction.__typename === 'MintNFT') {
+    if (
+      transaction.__typename === 'MintNFT' ||
+      transaction.__typename === 'MintNft'
+    ) {
       nfts.push(transaction);
       // console.log(transaction);
     }
@@ -228,7 +231,7 @@ const processBlock = async (id) => {
   }
 
   await NFT_TRACKER.send(
-    `View of ${nfts.length} NFTs in https://explorer.loopring.io/block/${id}?type=MintNFT`
+    `View of ${nfts.length} NFTs in https://explorer.loopring.io/block/${id}?type=MintNft`
   );
 
   if (images.length) {
