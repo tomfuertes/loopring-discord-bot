@@ -37,6 +37,10 @@ const downloadImage = async (urlArg) => {
   response.data.pipe(writer);
 
   return new Promise((resolve, reject) => {
+    const timeout = setTimeout(reject, 10000); // abort after 10 s
+    writer.on('finish', () => {
+      clearTimeout(timeout);
+    });
     writer.on('finish', resolve);
     writer.on('error', reject);
   }).then(() => path);
