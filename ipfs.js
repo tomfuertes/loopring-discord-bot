@@ -50,7 +50,9 @@ const downloadImage = async (urlArg) => {
 
 const cleanUrl = (url) => {
   if (url.startsWith('ipfs://')) {
-    return url.replace('ipfs://', endpoint);
+    return url
+      .replace('ipfs://', endpoint)
+      .replace('https://ipfs.io/ipfs/', endpoint);
   } else {
     return url;
   }
