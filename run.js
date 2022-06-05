@@ -154,7 +154,18 @@ const processBlock = async (id) => {
         const count = await redis.incr(`nft:${contract}`);
         console.log({ contract, count });
         await redis.expire(`nft:${contract}`, 60 * 60 * 24); // 24 hours
-        if (count === 100) {
+        if (
+          count === 1 &&
+          JSON.stringify(metadata).includes('api.nft.gamestop.com')
+        ) {
+          await NFT_TRACKER.send(
+            `New Gamestop Collection: https://explorer.loopring.io/collections/${contract}: \`\`\`${YAML.stringify(
+              metadata,
+              null,
+              2
+            ).trim()}\`\`\``
+          );
+        } else if (count === 100) {
           await NFT_TRACKER.send(
             `Large collection: https://explorer.loopring.io/collections/${contract}: \`\`\`${YAML.stringify(
               metadata,
