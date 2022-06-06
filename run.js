@@ -294,25 +294,33 @@ const processBlock = async (id) => {
 (async () => {
   console.log('run', new Date());
 
-  const { message, status, result } = (
-    await axios.get(
-      `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${process.env.ETHERSCAN_API_KEY}`
-    )
-  ).data;
-  if (status === '1' && message === 'OK') {
-    console.log('result', result);
-    const { FastGasPrice } = result;
-    if (parseInt(FastGasPrice, 10) <= 20) {
-      await ASSET_TRACKER.send(
-        `FastGasPrice: ${FastGasPrice} @ https://etherscan.io/gastracker`
-      );
+  try {
+    const { message, status, result } = (
+      await axios.get(
+        `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${process.env.ETHERSCAN_API_KEY}`
+      )
+    ).data;
+    if (status === '1' && message === 'OK') {
+      console.log('result', result);
+      const { FastGasPrice } = result;
+      if (parseInt(FastGasPrice, 10) <= 20) {
+        await ASSET_TRACKER.send(
+          `FastGasPrice: ${FastGasPrice} @ https://etherscan.io/gastracker`
+        );
+      }
     }
+  } catch (e) {
+    console.error('try get gas error', e);
   }
 
-  for (const block of (
-    await loopring.getBlocks(50)
-  ).data.data.blocks.reverse()) {
-    await processBlock(block.id);
+  try {
+    for (const block of (
+      await loopring.getBlocks(50)
+    ).data.data.blocks.reverse()) {
+      await processBlock(block.id);
+    }
+  } catch (error) {
+    console.error('process blocks error', error);
   }
   process.exit(0);
 })();
