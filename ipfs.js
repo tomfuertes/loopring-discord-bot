@@ -112,7 +112,7 @@ module.exports = {
         // console.log('JOIN', path);
         try {
           const buffer = await sharp(path)
-            .resize({ fit: 'fill', width: 196, height: 196 })
+            .resize({ fit: 'contain', width: 196, height: 196 })
             .extend({
               top: 2,
               bottom: 2,
@@ -125,7 +125,7 @@ module.exports = {
         } catch (e) {
           console.log('Error in image. Falling back to oops', e.message);
           const buffer = await sharp(Path.resolve('./tmp/oops.png'))
-            .resize({ fit: 'fill', width: 196, height: 196 })
+            .resize({ fit: 'contain', width: 196, height: 196 })
             .extend({
               top: 2,
               bottom: 2,
