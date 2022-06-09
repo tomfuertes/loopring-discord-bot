@@ -104,6 +104,8 @@ module.exports = {
 
     const rows = [];
 
+    const size = paths.length > 100 ? 196 : 96;
+
     for (const paths of grid) {
       // const images = await Promise.all(column.map(downloadImage));
       const buffers = [];
@@ -112,7 +114,7 @@ module.exports = {
         // console.log('JOIN', path);
         try {
           const buffer = await sharp(path)
-            .resize({ fit: 'contain', width: 196, height: 196 })
+            .resize({ fit: 'contain', width: size, height: size })
             .extend({
               top: 2,
               bottom: 2,
@@ -125,7 +127,7 @@ module.exports = {
         } catch (e) {
           console.log('Error in image. Falling back to oops', e.message);
           const buffer = await sharp(Path.resolve('./tmp/oops.png'))
-            .resize({ fit: 'contain', width: 196, height: 196 })
+            .resize({ fit: 'contain', width: size, height: size })
             .extend({
               top: 2,
               bottom: 2,
@@ -154,7 +156,13 @@ module.exports = {
 
       const finalImage = Path.resolve(path, `${now}.png`);
 
-      await img.toFile(finalImage);
+      await img
+        .png({
+          compressionLevel: 9,
+          adaptiveFiltering: true,
+          force: true,
+        })
+        .toFile(finalImage);
 
       return finalImage;
     }
