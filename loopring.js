@@ -51,7 +51,8 @@ const getBlocks = async (count = 10) =>
         orderBy: 'internalID',
         orderDirection: 'desc',
       },
-    }
+    },
+    { timeout: 10000 }
   );
 
 const getBlock = async (block, first = 1000) =>
