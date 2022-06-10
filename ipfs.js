@@ -104,7 +104,7 @@ module.exports = {
 
     const rows = [];
 
-    const size = paths.length < 100 ? 196 : 96;
+    const size = paths.length <= 144 ? 196 : 96;
 
     for (const paths of grid) {
       // const images = await Promise.all(column.map(downloadImage));
